@@ -26,10 +26,12 @@ class TripsController < ApplicationController
     if @trip.update(params.require(:trip).permit(:status))
       if @trip.status == "ended"
         TripWorker.perform_async("trips/#{trip_id}")
-        render json: {updated: true , message:'bulk of locations added to the queue to be inserted'}
+      elsif @trip.status == "ongoing"
+        Rails.cache.write("trips/#{trip_id}",@trip, expires_in: 1.day)
       else
-        render json: {updated: true}
+        Rails.cache.delete("trips/#{trip_id}")
       end
+      render json: {updated: true}
     else
       render json: {updated: false}
     end
