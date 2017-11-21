@@ -1,0 +1,18 @@
+
+// Create new trip -> respond with new trip info
+curl -d '{"status":"planning" , "startpoint" : { "longitude" : 20 , "latitude" : 44} ,"endpoint" : {"longitude" : -597 , "latitude" : 13 }}' -H "Content-Type: application/json" -X POST http://localhost:3000/trips
+
+//Add location to existent trip -> respond with if the location inserted or not
+curl -d '{"location" : {"longitude" : 20 , "latitude" : 44}}' -H "Content-Type: application/json" -X POST http://localhost:3000/trips/:id/locations
+
+// Update an existent trip status -> respond with if the trip status updated or not
+curl -d '{"status":"ended"}' -H "Content-Type: application/json" -X PATCH http://localhost:3000/trips/:id
+
+//Get trip -> respond with trip info
+curl -H "Content-Type: application/json" -X GET http://localhost:3000/trips/:id
+
+//Get All Trip -> respond with all existent trips
+curl -H "Content-Type: application/json" -X GET http://localhost:3000/trips
+
+//Delete Trip -> respond with if the trip deleted or not
+curl -H "Content-Type: application/json" -X DELETE http://localhost:3000/trips/:id
